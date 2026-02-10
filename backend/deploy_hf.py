@@ -5,7 +5,7 @@ sys.path.append(r"C:\Users\Muzammil\Desktop\Hackathon08 -Phase2\backend\venv\Lib
 from huggingface_hub import HfApi
 
 # Configuration
-TOKEN = "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"
+TOKEN = "ADD_TOKEN_HERE"
 REPO_ID = "MuzammilMax/todo_app" # Extracted from your URL
 
 api = HfApi()
