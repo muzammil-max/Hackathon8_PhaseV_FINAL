@@ -1,0 +1,27 @@
+# Default values for todo-app.
+global:
+  env: local
+
+image:
+  repository: todo
+  tag: local
+  pullPolicy: IfNotPresent
+
+services:
+  - name: chat-service
+    replicas: 1
+    serviceType: LoadBalancer
+  - name: task-service
+    replicas: 1
+  - name: scheduler-service
+    replicas: 1
+  - name: notification-service
+    replicas: 1
+
+redis:
+  host: redis-master:6379
+  secretName: redis
+  secretKey: redis-password
+
+kafka:
+  brokers: my-cluster-kafka-bootstrap:9092

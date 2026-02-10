@@ -1,0 +1,16 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: pubsub
+spec:
+  type: pubsub.kafka
+  version: v1
+  metadata:
+  - name: brokers
+    value: {{ .Values.kafka.brokers | default "my-cluster-kafka-bootstrap:9092" }}
+  - name: authRequired
+    value: "false"
+  - name: maxMessageBytes
+    value: "1048576"
+  - name: consumeRetryInterval
+    value: "100ms"

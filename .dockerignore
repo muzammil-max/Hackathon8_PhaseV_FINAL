@@ -1,0 +1,24 @@
+# Docker ignore file
+.git
+.gitignore
+node_modules
+dist
+build
+*.log
+__pycache__
+*.pyc
+.venv
+venv
+.env
+*.egg-info
+.vscode
+.idea
+.DS_Store
+*.tmp
+*.swp
+history/
+specs/
+tests/
+frontend/.next
+frontend/node_modules
+backend/venv

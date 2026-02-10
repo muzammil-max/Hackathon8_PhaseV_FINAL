@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-frontend
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-frontend
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-frontend
+    spec:
+      containers:
+      - name: frontend
+        image: "{{ .Values.frontend.repository }}:{{ .Values.frontend.tag }}"
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        ports:
+        - containerPort: {{ .Values.frontend.port }}
+        env:
+        - name: NEXT_PUBLIC_API_URL
+          value: "http://{{ .Release.Name }}-backend:{{ .Values.backend.port }}"
+        resources:
+          {{- toYaml .Values.frontend.resources | nindent 10 }}
+        # Next.js doesn't usually have a /health by default unless implemented, 
+        # but let's assume root or login page works for basic check.
+        livenessProbe:
+          httpGet:
+            path: /
+            port: {{ .Values.frontend.port }}
+          initialDelaySeconds: 30
+          periodSeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /
+            port: {{ .Values.frontend.port }}
+          initialDelaySeconds: 10
+          periodSeconds: 10

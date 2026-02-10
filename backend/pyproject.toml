@@ -1,0 +1,18 @@
+[project]
+name = "mytodo-backend"
+version = "0.1.0"
+description = "MyTodoApp Backend"
+requires-python = ">=3.10"
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+
+[tool.black]
+line-length = 88
+target-version = ['py310']
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+python_files = ["test_*.py"]

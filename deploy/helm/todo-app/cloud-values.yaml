@@ -1,0 +1,29 @@
+# Cloud-specific values for todo-app
+global:
+  env: production
+
+image:
+  repository: myregistry.azurecr.io/todo  # Update with your Container Registry
+  tag: latest
+  pullPolicy: Always
+
+services:
+  - name: chat-service
+    replicas: 2
+    serviceType: LoadBalancer
+  - name: task-service
+    replicas: 2
+  - name: scheduler-service
+    replicas: 1
+  - name: notification-service
+    replicas: 2
+
+# Example: Using Azure Cache for Redis or managed equivalent
+redis:
+  host: my-managed-redis.redis.cache.windows.net:6380
+  secretName: redis-secrets
+  secretKey: primary-key
+
+# Example: Using Managed Kafka (e.g., Confluent or Event Hubs)
+kafka:
+  brokers: my-kafka-namespace.servicebus.windows.net:9093

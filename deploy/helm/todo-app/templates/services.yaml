@@ -1,0 +1,48 @@
+{{- range $service := .Values.services }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $service.name }}
+  labels:
+    app: {{ $service.name }}
+spec:
+  replicas: {{ $service.replicas | default 1 }}
+  selector:
+    matchLabels:
+      app: {{ $service.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ $service.name }}
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "{{ $service.name }}"
+        dapr.io/app-port: "8000"
+    spec:
+      containers:
+      - name: {{ $service.name }}
+        image: "{{ $.Values.image.repository }}/{{ $service.name }}:{{ $.Values.image.tag }}"
+        imagePullPolicy: {{ $.Values.image.pullPolicy }}
+        ports:
+        - containerPort: 8000
+        env:
+        - name: SERVICE_NAME
+          value: "{{ $service.name }}"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $service.name }}
+  labels:
+    app: {{ $service.name }}
+spec:
+  type: {{ $service.serviceType | default "ClusterIP" }}
+  ports:
+  - port: 80
+    targetPort: 8000
+    protocol: TCP
+    name: http
+  selector:
+    app: {{ $service.name }}
+{{- end }}
